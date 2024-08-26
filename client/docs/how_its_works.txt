@@ -1,0 +1,51 @@
+İstemci Kodunun Çalışma Prensibi
+
+Modüller
+1. adress.c
+
+    **readAdressBook(struct user **head, struct user tail): Adres defterini okur ve kullanıcıları bir bağlı listeye ekler. JSON formatındaki dosyayı okur, kullanıcı adlarını alır ve listeye ekler.
+
+2. getmsg.c
+
+    getmsg(void *args): Mesaj almak için sonsuz bir döngüde çalışır. Gelen mesajları alır, JSON formatında ayrıştırır ve ekrana yazdırır.
+
+    getcr(char *id, int *getdf, struct sockaddr_in *getst, int *sndfd, struct sockaddr_in *sndst): Kullanıcıdan giriş bilgilerini alır (kullanıcı adı ve şifre) ve bunları sunucuya gönderir. Giriş bilgilerini doğrular ve kullanıcı ID'sini alır.
+
+3. list.c
+
+    **adduser(char *uname, struct user **head, struct user tail): Yeni bir kullanıcı ekler. Kullanıcı adını alır ve bağlı listeye ekler.
+
+    **fnduser(char *uname, struct user *index, struct user **head, struct user tail): Belirtilen kullanıcı adını kullanarak kullanıcıyı bulur.
+
+    **delusr(char *uname, struct user **head, struct user tail): Belirtilen kullanıcı adını kullanarak kullanıcıyı listeden siler.
+
+    **deldb(struct user head): Adres defterini yok eder ve belleği serbest bırakır.
+
+4. log.c
+
+    logError(char *text): Hata mesajlarını bir dosyaya kaydeder.
+
+5. main.c
+
+    main: Programın ana fonksiyonu. Adres defterini okur, soketleri oluşturur ve sunucuya bağlanır. Kullanıcı giriş bilgilerini alır ve kullanıcı arayüzünü başlatır.
+
+6. ui.c
+
+    **startUI(char *id, struct user **head, struct user tail, int *getfd, struct sockaddr_in *getst, int *sndfd, struct sockaddr_in *sndst): Kullanıcı arayüzünü başlatır. Mesaj almak için bir iş parçacığı oluşturur ve kullanıcıdan mesaj alıp gönderir.
+
+Genel Çalışma Akışı
+
+    1. Başlatma: main fonksiyonu, gerekli başlık dosyalarını dahil eder ve adres defterini okur.
+    
+    2. Soket Oluşturma: Kullanıcı ile sunucu arasındaki iletişim için soketler oluşturulur.
+    
+    3. Bağlantı Sağlama: Sunucuya bağlanılır. Bağlantı başarılıysa kullanıcıya bilgi verilir.
+    
+    4. Kullanıcı Girişi: getcr fonksiyonu, kullanıcıdan giriş bilgilerini alır ve doğrular.
+
+    5.Kullanıcı Arayüzü: startUI fonksiyonu, kullanıcı arayüzünü başlatır. Mesaj almak için bir iş parçacığı oluşturur ve kullanıcıdan gelen mesajları alır.
+
+    6.Mesaj Gönderme: Kullanıcıdan alınan mesajlar, belirtilen alıcıya gönderilir.
+
+    7.Bağlantıyı Kapatma: Kullanıcı "close" komutunu girerse, soketler kapatılır ve adres defteri yok edilir.
+

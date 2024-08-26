@@ -1,0 +1,1 @@
+void logError(char *text);

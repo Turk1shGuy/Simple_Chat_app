@@ -1,0 +1,71 @@
+Kodun Çalışma Prensibi
+Modüller
+1. list.c
+
+    **addusr(char *uname, char *passh, struct user **head, struct user tail): Yeni bir kullanıcı ekler. Kullanıcı adı ve şifre alır, kullanıcıyı listeye ekler.
+
+    **delusr(char *uname, struct user head): Belirtilen kullanıcı adını kullanarak kullanıcıyı listeden siler.
+
+    num_users(struct user *head): Kullanıcı listesindeki toplam kullanıcı sayısını döndürür.
+
+    **addvals(char *uname, char *sessionid, int *getfd, int *sndfd, struct user **head, struct user tail): Kullanıcı soketlerini, kullanıcı adı aracılığıyla yapıya ekler.
+
+    **reset_val2soket(int *clsoket, struct user **head, struct user tail): Belirtilen soket için değerleri sıfırlar.
+
+    **reset_val2uname(char *uname, struct user **head, struct user tail): Belirtilen kullanıcı adı için değerleri sıfırlar.
+
+    auth_name(char *uname, struct user *head, struct user *tail): Kullanıcı adını kullanarak kullanıcıyı bulur.
+
+    auth_id(char *id, struct user *head, struct user *tail): Kullanıcı ID'sini kullanarak kullanıcıyı bulur.
+
+2. main.c
+
+    main: Programın ana fonksiyonu. Sunucu yapılandırmasını okur, soketleri oluşturur ve dinlemeye başlar. Kullanıcı bağlantılarını kabul eder ve her bağlantı için yeni bir iş parçacığı (thread) oluşturur.
+
+3. server.c
+
+    readdb(struct user *head, struct user *tail): Veritabanını okur ve kullanıcı listesini oluşturur.
+
+    freedb(struct user *head, struct user *tail): Veritabanını serbest bırakır ve bellek alanını temizler.
+
+    readconf(struct conf *sconf, struct user *head, struct user *tail): Sunucu yapılandırmasını okur.
+
+    logError(char *text): Hata mesajlarını dosyaya kaydeder.
+
+    logLogin(char *text, char *uname): Giriş bilgilerini dosyaya kaydeder.
+
+    hashpasswd(char *pass): Gelen parolayı hash'ler.
+
+4. start.c
+
+    st4rt(void *args): Kullanıcıyı başlatan fonksiyon. Kullanıcıdan giriş bilgilerini alır, kullanıcıyı listeye ekler ve mesajları alıp gönderir.
+
+5. user.c
+
+    genid(char *id): Kullanıcı ID'sini üretir.
+
+    sndid(char *id, int *recvierfd): Kullanıcı ID'sini alıcıya gönderir.
+
+    getlogincr(int *clgetfd, int *clsndfd, int *srvsndfd, struct sockaddr_in *clsndst, char *uname, char *pass, char *id, struct user *head): Kullanıcı giriş bilgilerini alır.
+
+    ulogin(char *uname, char *passh, struct user *head): Kullanıcı adı ve şifreyi doğrular.
+
+    getMsg(char *msg, int *clsndfd, struct user *head, struct user *tail): Mesajı alır.
+
+    **convert(char msg, char *recvierName, struct user *head, struct user *tail): Mesajı işler ve alıcı adını doğrular.
+
+    sndMsg(char *msg, char *recvierName, struct user *head, struct user *tail): Mesajı alıcıya gönderir.
+
+Genel Çalışma Akışı
+
+    1. Başlatma: main fonksiyonu, gerekli başlık dosyalarını dahil eder ve sunucu yapılandırmasını okur.
+
+    2. Soket Oluşturma: Kullanıcı bağlantılarını kabul etmek için soketler oluşturulur ve dinlemeye başlanır.
+
+    3. Kullanıcı Bağlantısı: Kullanıcı bağlantıları kabul edilir ve her bağlantı için yeni bir iş parçacığı oluşturulur.
+
+    4. Kullanıcı Girişi: st4rt fonksiyonu, kullanıcıdan giriş bilgilerini alır ve doğrular.
+
+    5. Mesajlaşma: Kullanıcıdan gelen mesajlar alınır, işlenir ve ilgili alıcıya iletilir.
+
+

@@ -1,0 +1,14 @@
+{
+    "users":
+    [
+        {
+            "uname": "Kullanıcı1"
+        },
+        {
+            "uname": "Kullanıcı2"
+        },
+        {
+            "uname": "Kullanıcı3"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "print.h": "c",
+        "global.h": "c",
+        "list.h": "c",
+        "getmsg.h": "c",
+        "ui.h": "c"
+    }
+}
